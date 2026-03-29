@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_components_editors",
+  "info": {
+    "displayName": "editor",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "richText": {
+      "type": "richtext"
+    },
+    "editor2": {
+      "type": "richtext"
+    }
+  }
+}

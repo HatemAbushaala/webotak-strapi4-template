@@ -1,11 +1,11 @@
 {
-	"name": "custom-fields",
+	"name": "webotak-strapi4-template",
 	"version": "0.1.0",
 	"private": true,
-	"description": "A Strapi application",
+	"description": "webotak-strapi4-template",
 	"license": "MIT",
 	"author": {
-		"name": "A Strapi developer"
+		"name": "hatem abushaala"
 	},
 	"scripts": {
 		"add-action": "node src/commands/kernal.js add-action",

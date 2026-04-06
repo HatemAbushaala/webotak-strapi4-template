@@ -1,0 +1,35 @@
+{
+  "kind": "collectionType",
+  "collectionName": "test_groups",
+  "info": {
+    "singularName": "test-group",
+    "pluralName": "test-groups",
+    "displayName": "Test Group",
+    "description": "Sub-grouping of tests within a category (e.g., Thyroid under Hormones)"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text"
+    },
+    "category": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::category.category",
+      "inversedBy": "test_groups"
+    },
+    "tests": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::test.test",
+      "mappedBy": "test_group"
+    }
+  }
+}

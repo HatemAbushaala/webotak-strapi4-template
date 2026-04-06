@@ -1,0 +1,78 @@
+{
+  "kind": "collectionType",
+  "collectionName": "orders",
+  "info": {
+    "singularName": "order",
+    "pluralName": "orders",
+    "displayName": "Order",
+    "description": "Laboratory test order for a patient"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "patient": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::patient.patient",
+      "inversedBy": "orders"
+    },
+    "order_date": {
+      "type": "datetime",
+      "required": true
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": [
+        "pending",
+        "sample_collected",
+        "completed",
+        "approved",
+        "delivered",
+        "cancelled"
+      ],
+      "default": "pending",
+      "required": true
+    },
+    "total_price": {
+      "type": "decimal",
+      "default": 0
+    },
+    "discount": {
+      "type": "decimal",
+      "default": 0
+    },
+    "discount_percentage": {
+      "type": "decimal",
+      "default": 0
+    },
+    "paid_amount": {
+      "type": "decimal",
+      "default": 0
+    },
+    "payment_status": {
+      "type": "enumeration",
+      "enum": [
+        "unpaid",
+        "partially_paid",
+        "fully_paid"
+      ],
+      "default": "unpaid",
+      "required": true
+    },
+    "is_auto_approved": {
+      "type": "boolean",
+      "default": false
+    },
+    "referring_doctor": {
+      "type": "string"
+    },
+    "order_items": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::order-item.order-item",
+      "mappedBy": "order"
+    }
+  }
+}

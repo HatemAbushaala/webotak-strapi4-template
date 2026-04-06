@@ -1,0 +1,46 @@
+{
+  "kind": "collectionType",
+  "collectionName": "tests",
+  "info": {
+    "singularName": "test",
+    "pluralName": "tests",
+    "displayName": "Test",
+    "description": "Individual lab test (e.g., Free Triiodothyronine, CBC)"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "code": {
+      "type": "string",
+      "unique": true
+    },
+    "normal_range": {
+      "type": "string"
+    },
+    "unit": {
+      "type": "string"
+    },
+    "price": {
+      "type": "decimal",
+      "required": true,
+      "default": 0
+    },
+    "test_group": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::test-group.test-group",
+      "inversedBy": "tests"
+    },
+    "tube": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::tube.tube"
+    }
+  }
+}

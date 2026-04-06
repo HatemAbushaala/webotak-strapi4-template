@@ -1,0 +1,27 @@
+{
+  "kind": "collectionType",
+  "collectionName": "tubes",
+  "info": {
+    "singularName": "tube",
+    "pluralName": "tubes",
+    "displayName": "Tube",
+    "description": "Specimen collection tube type (e.g., EDTA, Serum Separator)"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "color": {
+      "type": "string"
+    },
+    "description": {
+      "type": "text"
+    }
+  }
+}

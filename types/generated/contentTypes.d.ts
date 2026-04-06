@@ -284,42 +284,6 @@ export interface AdminUser extends Schema.CollectionType {
 }
 
 export interface ApiActivityActivity extends Schema.CollectionType {
-<<<<<<< HEAD
-  collectionName: 'activities';
-  info: {
-    singularName: 'activity';
-    pluralName: 'activities';
-    displayName: 'activity';
-    description: '';
-  };
-  options: {
-    draftAndPublish: false;
-  };
-  attributes: {
-    user: Attribute.Relation<
-      'api::activity.activity',
-      'oneToOne',
-      'plugin::users-permissions.user'
-    >;
-    operation: Attribute.String;
-    model: Attribute.String;
-    payload: Attribute.JSON;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::activity.activity',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::activity.activity',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-=======
 	collectionName: 'activities'
 	info: {
 		description: ''
@@ -340,13 +304,13 @@ export interface ApiActivityActivity extends Schema.CollectionType {
 		updatedBy: Attribute.Relation<'api::activity.activity', 'oneToOne', 'admin::user'> & Attribute.Private
 		user: Attribute.Relation<'api::activity.activity', 'oneToOne', 'plugin::users-permissions.user'>
 	}
->>>>>>> ckeditor
 }
 
 export interface ApiCategoryCategory extends Schema.CollectionType {
 	collectionName: 'categories'
 	info: {
-		displayName: 'category'
+		description: 'Top-level test classification (e.g., Hormones, Hematology)'
+		displayName: 'Category'
 		pluralName: 'categories'
 		singularName: 'category'
 	}
@@ -356,75 +320,65 @@ export interface ApiCategoryCategory extends Schema.CollectionType {
 	attributes: {
 		createdAt: Attribute.DateTime
 		createdBy: Attribute.Relation<'api::category.category', 'oneToOne', 'admin::user'> & Attribute.Private
-		name: Attribute.String
-		products: Attribute.Relation<'api::category.category', 'manyToMany', 'api::product.product'>
+		description: Attribute.Text
+		name: Attribute.String & Attribute.Required & Attribute.Unique
+		test_groups: Attribute.Relation<'api::category.category', 'oneToMany', 'api::test-group.test-group'>
 		updatedAt: Attribute.DateTime
 		updatedBy: Attribute.Relation<'api::category.category', 'oneToOne', 'admin::user'> & Attribute.Private
 	}
 }
 
-export interface ApiLocaleTestLocaleTest extends Schema.CollectionType {
-	collectionName: 'locale_tests'
+export interface ApiFavoriteGroupFavoriteGroup extends Schema.CollectionType {
+	collectionName: 'favorite_groups'
 	info: {
-		displayName: 'locale-test'
-		pluralName: 'locale-tests'
-		singularName: 'locale-test'
+		description: 'Preset group of tests for quick order creation'
+		displayName: 'Favorite Group'
+		pluralName: 'favorite-groups'
+		singularName: 'favorite-group'
 	}
 	options: {
 		draftAndPublish: false
 	}
-	pluginOptions: {
-		i18n: {
-			localized: true
-		}
-	}
 	attributes: {
 		createdAt: Attribute.DateTime
-		createdBy: Attribute.Relation<'api::locale-test.locale-test', 'oneToOne', 'admin::user'> & Attribute.Private
-		editor: Attribute.RichText &
-			Attribute.SetPluginOptions<{
-				i18n: {
-					localized: true
-				}
-			}>
-		locale: Attribute.String
-		localizations: Attribute.Relation<'api::locale-test.locale-test', 'oneToMany', 'api::locale-test.locale-test'>
-		title: Attribute.String &
-			Attribute.SetPluginOptions<{
-				i18n: {
-					localized: true
-				}
-			}>
+		createdBy: Attribute.Relation<'api::favorite-group.favorite-group', 'oneToOne', 'admin::user'> & Attribute.Private
+		name: Attribute.String & Attribute.Required
+		tests: Attribute.Relation<'api::favorite-group.favorite-group', 'manyToMany', 'api::test.test'>
 		updatedAt: Attribute.DateTime
-		updatedBy: Attribute.Relation<'api::locale-test.locale-test', 'oneToOne', 'admin::user'> & Attribute.Private
+		updatedBy: Attribute.Relation<'api::favorite-group.favorite-group', 'oneToOne', 'admin::user'> & Attribute.Private
 	}
 }
 
-export interface ApiLocalizationLocalization extends Schema.CollectionType {
-	collectionName: 'localizations'
+export interface ApiOrderItemOrderItem extends Schema.CollectionType {
+	collectionName: 'order_items'
 	info: {
-		displayName: 'localization'
-		pluralName: 'localizations'
-		singularName: 'localization'
+		description: 'Individual test line within an order, holds result per test'
+		displayName: 'Order Item'
+		pluralName: 'order-items'
+		singularName: 'order-item'
 	}
 	options: {
 		draftAndPublish: false
 	}
 	attributes: {
-		ar: Attribute.Text
 		createdAt: Attribute.DateTime
-		createdBy: Attribute.Relation<'api::localization.localization', 'oneToOne', 'admin::user'> & Attribute.Private
-		en: Attribute.Text
-		key: Attribute.String
+		createdBy: Attribute.Relation<'api::order-item.order-item', 'oneToOne', 'admin::user'> & Attribute.Private
+		normal_range_snapshot: Attribute.String
+		order: Attribute.Relation<'api::order-item.order-item', 'manyToOne', 'api::order.order'>
+		price_snapshot: Attribute.Decimal
+		result: Attribute.Text
+		status: Attribute.Enumeration<['pending', 'in_progress', 'completed']> & Attribute.DefaultTo<'pending'>
+		test: Attribute.Relation<'api::order-item.order-item', 'manyToOne', 'api::test.test'>
 		updatedAt: Attribute.DateTime
-		updatedBy: Attribute.Relation<'api::localization.localization', 'oneToOne', 'admin::user'> & Attribute.Private
+		updatedBy: Attribute.Relation<'api::order-item.order-item', 'oneToOne', 'admin::user'> & Attribute.Private
 	}
 }
 
 export interface ApiOrderOrder extends Schema.CollectionType {
 	collectionName: 'orders'
 	info: {
-		displayName: 'order'
+		description: 'Laboratory test order for a patient'
+		displayName: 'Order'
 		pluralName: 'orders'
 		singularName: 'order'
 	}
@@ -432,256 +386,118 @@ export interface ApiOrderOrder extends Schema.CollectionType {
 		draftAndPublish: false
 	}
 	attributes: {
-		amount: Attribute.Decimal
 		createdAt: Attribute.DateTime
 		createdBy: Attribute.Relation<'api::order.order', 'oneToOne', 'admin::user'> & Attribute.Private
+		discount: Attribute.Decimal & Attribute.DefaultTo<0>
+		discount_percentage: Attribute.Decimal & Attribute.DefaultTo<0>
+		is_auto_approved: Attribute.Boolean & Attribute.DefaultTo<false>
+		order_date: Attribute.DateTime & Attribute.Required
+		order_items: Attribute.Relation<'api::order.order', 'oneToMany', 'api::order-item.order-item'>
+		paid_amount: Attribute.Decimal & Attribute.DefaultTo<0>
+		patient: Attribute.Relation<'api::order.order', 'manyToOne', 'api::patient.patient'>
+		payment_status: Attribute.Enumeration<['unpaid', 'partially_paid', 'fully_paid']> & Attribute.Required & Attribute.DefaultTo<'unpaid'>
+		referring_doctor: Attribute.String
+		status: Attribute.Enumeration<['pending', 'sample_collected', 'completed', 'approved', 'delivered', 'cancelled']> &
+			Attribute.Required &
+			Attribute.DefaultTo<'pending'>
+		total_price: Attribute.Decimal & Attribute.DefaultTo<0>
 		updatedAt: Attribute.DateTime
 		updatedBy: Attribute.Relation<'api::order.order', 'oneToOne', 'admin::user'> & Attribute.Private
 	}
 }
 
-export interface ApiProductProduct extends Schema.CollectionType {
-<<<<<<< HEAD
-  collectionName: 'products';
-  info: {
-    singularName: 'product';
-    pluralName: 'products';
-    displayName: 'product';
-    description: '';
-  };
-  options: {
-    draftAndPublish: false;
-  };
-  attributes: {
-    name: Attribute.String;
-    categories: Attribute.Relation<
-      'api::product.product',
-      'manyToMany',
-      'api::category.category'
-    >;
-    variations: Attribute.Relation<
-      'api::product.product',
-      'oneToMany',
-      'api::variation.variation'
-    >;
-    shipping_detail: Attribute.Relation<
-      'api::product.product',
-      'oneToOne',
-      'api::shipping-detail.shipping-detail'
-    >;
-    test: Attribute.String;
-    test2: Attribute.String;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::product.product',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::product.product',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
-export interface ApiResourceResource extends Schema.CollectionType {
-  collectionName: 'resources';
-  info: {
-    singularName: 'resource';
-    pluralName: 'resources';
-    displayName: 'Resource';
-    description: '';
-  };
-  options: {
-    draftAndPublish: false;
-  };
-  attributes: {
-    md: Attribute.RichText;
-    color: Attribute.String &
-      Attribute.CustomField<'plugin::color-picker.color'>;
-    country: Attribute.String &
-      Attribute.CustomField<'plugin::country-select.country'>;
-    select: Attribute.JSON &
-      Attribute.CustomField<
-        'plugin::multi-select.multi-select',
-        ['option1', 'option2', 'Third option:option3']
-      >;
-    enum_select: Attribute.Enumeration<['a', 'b', 'c']>;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::resource.resource',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::resource.resource',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-=======
-	collectionName: 'products'
+export interface ApiPatientPatient extends Schema.CollectionType {
+	collectionName: 'patients'
 	info: {
-		description: ''
-		displayName: 'product'
-		pluralName: 'products'
-		singularName: 'product'
-	}
-	options: {
-		draftAndPublish: false
-	}
-	attributes: {
-		categories: Attribute.Relation<'api::product.product', 'manyToMany', 'api::category.category'>
-		createdAt: Attribute.DateTime
-		createdBy: Attribute.Relation<'api::product.product', 'oneToOne', 'admin::user'> & Attribute.Private
-		name: Attribute.String
-		shipping_detail: Attribute.Relation<'api::product.product', 'oneToOne', 'api::shipping-detail.shipping-detail'>
-		updatedAt: Attribute.DateTime
-		updatedBy: Attribute.Relation<'api::product.product', 'oneToOne', 'admin::user'> & Attribute.Private
-		variations: Attribute.Relation<'api::product.product', 'oneToMany', 'api::variation.variation'>
-	}
-}
-
-export interface ApiResourceResource extends Schema.CollectionType {
-	collectionName: 'resources'
-	info: {
-		description: ''
-		displayName: 'Resource'
-		pluralName: 'resources'
-		singularName: 'resource'
-	}
-	options: {
-		draftAndPublish: false
-	}
-	attributes: {
-		color: Attribute.String & Attribute.CustomField<'plugin::color-picker.color'>
-		country: Attribute.String & Attribute.CustomField<'plugin::country-select.country'>
-		createdAt: Attribute.DateTime
-		createdBy: Attribute.Relation<'api::resource.resource', 'oneToOne', 'admin::user'> & Attribute.Private
-		enum_select: Attribute.Enumeration<['a', 'b', 'c']>
-		md: Attribute.RichText
-		select: Attribute.JSON & Attribute.CustomField<'plugin::multi-select.multi-select', ['option1', 'option2', 'Third option:option3']>
-		updatedAt: Attribute.DateTime
-		updatedBy: Attribute.Relation<'api::resource.resource', 'oneToOne', 'admin::user'> & Attribute.Private
-	}
->>>>>>> ckeditor
-}
-
-export interface ApiShippingDetailShippingDetail extends Schema.CollectionType {
-	collectionName: 'shipping_details'
-	info: {
-		description: ''
-		displayName: 'shipping-detail'
-		pluralName: 'shipping-details'
-		singularName: 'shipping-detail'
+		description: 'Patient records'
+		displayName: 'Patient'
+		pluralName: 'patients'
+		singularName: 'patient'
 	}
 	options: {
 		draftAndPublish: false
 	}
 	attributes: {
 		createdAt: Attribute.DateTime
-		createdBy: Attribute.Relation<'api::shipping-detail.shipping-detail', 'oneToOne', 'admin::user'> & Attribute.Private
-		height: Attribute.Integer
-		product: Attribute.Relation<'api::shipping-detail.shipping-detail', 'oneToOne', 'api::product.product'>
+		createdBy: Attribute.Relation<'api::patient.patient', 'oneToOne', 'admin::user'> & Attribute.Private
+		date_of_birth: Attribute.Date & Attribute.Required
+		gender: Attribute.Enumeration<['male', 'female']> & Attribute.Required
+		name: Attribute.String & Attribute.Required
+		orders: Attribute.Relation<'api::patient.patient', 'oneToMany', 'api::order.order'>
+		phone: Attribute.String
 		updatedAt: Attribute.DateTime
-		updatedBy: Attribute.Relation<'api::shipping-detail.shipping-detail', 'oneToOne', 'admin::user'> & Attribute.Private
-		weight: Attribute.Integer
-		width: Attribute.Integer
+		updatedBy: Attribute.Relation<'api::patient.patient', 'oneToOne', 'admin::user'> & Attribute.Private
+	}
+}
+
+export interface ApiTestGroupTestGroup extends Schema.CollectionType {
+	collectionName: 'test_groups'
+	info: {
+		description: 'Sub-grouping of tests within a category (e.g., Thyroid under Hormones)'
+		displayName: 'Test Group'
+		pluralName: 'test-groups'
+		singularName: 'test-group'
+	}
+	options: {
+		draftAndPublish: false
+	}
+	attributes: {
+		category: Attribute.Relation<'api::test-group.test-group', 'manyToOne', 'api::category.category'>
+		createdAt: Attribute.DateTime
+		createdBy: Attribute.Relation<'api::test-group.test-group', 'oneToOne', 'admin::user'> & Attribute.Private
+		description: Attribute.Text
+		name: Attribute.String & Attribute.Required
+		tests: Attribute.Relation<'api::test-group.test-group', 'oneToMany', 'api::test.test'>
+		updatedAt: Attribute.DateTime
+		updatedBy: Attribute.Relation<'api::test-group.test-group', 'oneToOne', 'admin::user'> & Attribute.Private
 	}
 }
 
 export interface ApiTestTest extends Schema.CollectionType {
-<<<<<<< HEAD
-  collectionName: 'tests';
-  info: {
-    singularName: 'test';
-    pluralName: 'tests';
-    displayName: 'test';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    name: Attribute.String;
-    updated: Attribute.String;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<'api::test.test', 'oneToOne', 'admin::user'> &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<'api::test.test', 'oneToOne', 'admin::user'> &
-      Attribute.Private;
-  };
-=======
 	collectionName: 'tests'
 	info: {
-		description: ''
-		displayName: 'test'
+		description: 'Individual lab test (e.g., Free Triiodothyronine, CBC)'
+		displayName: 'Test'
 		pluralName: 'tests'
 		singularName: 'test'
-	}
-	options: {
-		draftAndPublish: true
-	}
-	pluginOptions: {
-		i18n: {
-			localized: true
-		}
-	}
-	attributes: {
-		createdAt: Attribute.DateTime
-		createdBy: Attribute.Relation<'api::test.test', 'oneToOne', 'admin::user'> & Attribute.Private
-		locale: Attribute.String
-		localizations: Attribute.Relation<'api::test.test', 'oneToMany', 'api::test.test'>
-		markdown: Attribute.RichText &
-			Attribute.SetPluginOptions<{
-				i18n: {
-					localized: true
-				}
-			}>
-		name: Attribute.String &
-			Attribute.SetPluginOptions<{
-				i18n: {
-					localized: true
-				}
-			}>
-		publishedAt: Attribute.DateTime
-		updated: Attribute.String &
-			Attribute.SetPluginOptions<{
-				i18n: {
-					localized: true
-				}
-			}>
-		updatedAt: Attribute.DateTime
-		updatedBy: Attribute.Relation<'api::test.test', 'oneToOne', 'admin::user'> & Attribute.Private
-	}
->>>>>>> ckeditor
-}
-
-export interface ApiVariationVariation extends Schema.CollectionType {
-	collectionName: 'variations'
-	info: {
-		displayName: 'variation'
-		pluralName: 'variations'
-		singularName: 'variation'
 	}
 	options: {
 		draftAndPublish: false
 	}
 	attributes: {
+		code: Attribute.String & Attribute.Unique
 		createdAt: Attribute.DateTime
-		createdBy: Attribute.Relation<'api::variation.variation', 'oneToOne', 'admin::user'> & Attribute.Private
-		name: Attribute.String
-		product: Attribute.Relation<'api::variation.variation', 'manyToOne', 'api::product.product'>
+		createdBy: Attribute.Relation<'api::test.test', 'oneToOne', 'admin::user'> & Attribute.Private
+		name: Attribute.String & Attribute.Required
+		normal_range: Attribute.String
+		price: Attribute.Decimal & Attribute.Required & Attribute.DefaultTo<0>
+		test_group: Attribute.Relation<'api::test.test', 'manyToOne', 'api::test-group.test-group'>
+		tube: Attribute.Relation<'api::test.test', 'manyToOne', 'api::tube.tube'>
+		unit: Attribute.String
 		updatedAt: Attribute.DateTime
-		updatedBy: Attribute.Relation<'api::variation.variation', 'oneToOne', 'admin::user'> & Attribute.Private
+		updatedBy: Attribute.Relation<'api::test.test', 'oneToOne', 'admin::user'> & Attribute.Private
+	}
+}
+
+export interface ApiTubeTube extends Schema.CollectionType {
+	collectionName: 'tubes'
+	info: {
+		description: 'Specimen collection tube type (e.g., EDTA, Serum Separator)'
+		displayName: 'Tube'
+		pluralName: 'tubes'
+		singularName: 'tube'
+	}
+	options: {
+		draftAndPublish: false
+	}
+	attributes: {
+		color: Attribute.String
+		createdAt: Attribute.DateTime
+		createdBy: Attribute.Relation<'api::tube.tube', 'oneToOne', 'admin::user'> & Attribute.Private
+		description: Attribute.Text
+		name: Attribute.String & Attribute.Required & Attribute.Unique
+		updatedAt: Attribute.DateTime
+		updatedBy: Attribute.Relation<'api::tube.tube', 'oneToOne', 'admin::user'> & Attribute.Private
 	}
 }
 
@@ -1012,37 +828,6 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
 }
 
 declare module '@strapi/types' {
-<<<<<<< HEAD
-  export module Shared {
-    export interface ContentTypes {
-      'admin::permission': AdminPermission;
-      'admin::user': AdminUser;
-      'admin::role': AdminRole;
-      'admin::api-token': AdminApiToken;
-      'admin::api-token-permission': AdminApiTokenPermission;
-      'admin::transfer-token': AdminTransferToken;
-      'admin::transfer-token-permission': AdminTransferTokenPermission;
-      'plugin::upload.file': PluginUploadFile;
-      'plugin::upload.folder': PluginUploadFolder;
-      'plugin::content-releases.release': PluginContentReleasesRelease;
-      'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
-      'plugin::i18n.locale': PluginI18NLocale;
-      'plugin::users-permissions.permission': PluginUsersPermissionsPermission;
-      'plugin::users-permissions.role': PluginUsersPermissionsRole;
-      'plugin::users-permissions.user': PluginUsersPermissionsUser;
-      'plugin::route-permission.route-permission': PluginRoutePermissionRoutePermission;
-      'api::activity.activity': ApiActivityActivity;
-      'api::category.category': ApiCategoryCategory;
-      'api::localization.localization': ApiLocalizationLocalization;
-      'api::order.order': ApiOrderOrder;
-      'api::product.product': ApiProductProduct;
-      'api::resource.resource': ApiResourceResource;
-      'api::shipping-detail.shipping-detail': ApiShippingDetailShippingDetail;
-      'api::test.test': ApiTestTest;
-      'api::variation.variation': ApiVariationVariation;
-    }
-  }
-=======
 	export module Shared {
 		export interface ContentTypes {
 			'admin::api-token': AdminApiToken
@@ -1054,14 +839,13 @@ declare module '@strapi/types' {
 			'admin::user': AdminUser
 			'api::activity.activity': ApiActivityActivity
 			'api::category.category': ApiCategoryCategory
-			'api::locale-test.locale-test': ApiLocaleTestLocaleTest
-			'api::localization.localization': ApiLocalizationLocalization
+			'api::favorite-group.favorite-group': ApiFavoriteGroupFavoriteGroup
+			'api::order-item.order-item': ApiOrderItemOrderItem
 			'api::order.order': ApiOrderOrder
-			'api::product.product': ApiProductProduct
-			'api::resource.resource': ApiResourceResource
-			'api::shipping-detail.shipping-detail': ApiShippingDetailShippingDetail
+			'api::patient.patient': ApiPatientPatient
+			'api::test-group.test-group': ApiTestGroupTestGroup
 			'api::test.test': ApiTestTest
-			'api::variation.variation': ApiVariationVariation
+			'api::tube.tube': ApiTubeTube
 			'plugin::content-releases.release': PluginContentReleasesRelease
 			'plugin::content-releases.release-action': PluginContentReleasesReleaseAction
 			'plugin::i18n.locale': PluginI18NLocale
@@ -1073,5 +857,4 @@ declare module '@strapi/types' {
 			'plugin::users-permissions.user': PluginUsersPermissionsUser
 		}
 	}
->>>>>>> ckeditor
 }

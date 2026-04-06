@@ -1,0 +1,25 @@
+{
+  "kind": "collectionType",
+  "collectionName": "favorite_groups",
+  "info": {
+    "singularName": "favorite-group",
+    "pluralName": "favorite-groups",
+    "displayName": "Favorite Group",
+    "description": "Preset group of tests for quick order creation"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "tests": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::test.test"
+    }
+  }
+}
